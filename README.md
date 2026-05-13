@@ -124,6 +124,45 @@ O projeto contem as evidencias das execucoes realizadas:
 
 Os arquivos `statistics.json` dos relatorios HTML foram usados como fonte de conferencia das metricas consolidadas apresentadas neste README.
 
+## Relatorios HTML
+
+Os relatorios completos gerados pelo Apache JMeter estao versionados no repositorio como evidencia da execucao.
+
+### Load Test
+
+- [Abrir relatorio HTML do Load Test](./reports/load-test/html/index.html)
+- [Arquivo de resultado bruto - Load Test](./reports/load-test/results.jtl)
+
+### Spike Test
+
+- [Abrir relatorio HTML do Spike Test](./reports/spike-test/html/index.html)
+- [Arquivo de resultado bruto - Spike Test](./reports/spike-test/results.jtl)
+
+> Observacao: o GitHub pode exibir arquivos HTML como codigo-fonte. Para visualizar o relatorio com layout completo, clone ou baixe o repositorio e abra o arquivo `index.html` diretamente no navegador.
+
+## Execucao via GitHub Actions
+
+Alem da execucao local, o projeto tambem possui um workflow manual e opcional para execucao dos testes no GitHub Actions.
+
+Para executar:
+
+1. Acesse a aba **Actions** do repositorio.
+2. Selecione **JMeter Performance Tests**.
+3. Clique em **Run workflow**.
+4. Escolha o tipo de teste:
+   - `load`
+   - `spike`
+   - `both`
+5. Aguarde a execucao.
+6. Baixe os relatorios gerados na secao **Artifacts** da execucao.
+
+Os relatorios gerados pelo workflow ficam disponiveis como artifacts do GitHub Actions:
+
+- `load-test-report`: contem `reports/action-load-test/results.jtl` e `reports/action-load-test/html`.
+- `spike-test-report`: contem `reports/action-spike-test/results.jtl` e `reports/action-spike-test/html`.
+
+> Observacao: a execucao via GitHub Actions e manual e opcional. Como o BlazeDemo e um ambiente publico de demonstracao, os testes de carga devem ser executados com responsabilidade.
+
 ## Resultado do Load Test
 
 | Metrica | Resultado |
@@ -198,6 +237,4 @@ Portanto, o cenario avaliado nao pode ser considerado aprovado para o criterio e
 
 ## Observacao sobre o ambiente BlazeDemo
 
-O BlazeDemo e um ambiente publico de demonstracao. Por esse motivo, os resultados podem variar conforme disponibilidade, limitacoes externas, protecao contra alto volume de requisicoes e concorrencia de outros usuarios.
-
-Os testes e conclusoes devem ser interpretados considerando que nao ha controle sobre a infraestrutura, capacidade ou configuracao do ambiente testado.
+O BlazeDemo e um ambiente publico de demonstracao. Por isso, os resultados podem variar por concorrencia externa, limitacoes de infraestrutura ou mecanismos de protecao contra alto volume de requisicoes.

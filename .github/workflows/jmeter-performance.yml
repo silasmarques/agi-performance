@@ -1,0 +1,78 @@
+name: JMeter Performance Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: "Tipo de teste a executar"
+        required: true
+        default: "load"
+        type: choice
+        options:
+          - load
+          - spike
+          - both
+
+jobs:
+  jmeter-performance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Download Apache JMeter
+        run: |
+          curl -L -o apache-jmeter-5.6.3.tgz https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.tgz
+          tar -xzf apache-jmeter-5.6.3.tgz
+
+      - name: Prepare report folders
+        run: |
+          mkdir -p reports/action-load-test
+          mkdir -p reports/action-spike-test
+          rm -rf reports/action-load-test/html
+          rm -rf reports/action-spike-test/html
+          rm -f reports/action-load-test/results.jtl
+          rm -f reports/action-spike-test/results.jtl
+
+      - name: Run Load Test
+        if: ${{ github.event.inputs.test_type == 'load' || github.event.inputs.test_type == 'both' }}
+        run: |
+          ./apache-jmeter-5.6.3/bin/jmeter -n \
+            -t test-plans/blazedemo-load-test.jmx \
+            -l reports/action-load-test/results.jtl \
+            -e \
+            -o reports/action-load-test/html
+
+      - name: Run Spike Test
+        if: ${{ github.event.inputs.test_type == 'spike' || github.event.inputs.test_type == 'both' }}
+        run: |
+          ./apache-jmeter-5.6.3/bin/jmeter -n \
+            -t test-plans/blazedemo-spike-test.jmx \
+            -l reports/action-spike-test/results.jtl \
+            -e \
+            -o reports/action-spike-test/html
+
+      - name: Upload Load Test Report
+        if: ${{ github.event.inputs.test_type == 'load' || github.event.inputs.test_type == 'both' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: load-test-report
+          path: |
+            reports/action-load-test/results.jtl
+            reports/action-load-test/html
+
+      - name: Upload Spike Test Report
+        if: ${{ github.event.inputs.test_type == 'spike' || github.event.inputs.test_type == 'both' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: spike-test-report
+          path: |
+            reports/action-spike-test/results.jtl
+            reports/action-spike-test/html
