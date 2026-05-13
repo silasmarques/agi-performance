@@ -87,6 +87,8 @@ Antes de executar, ajuste a variavel `$jmeterBin` nos scripts PowerShell, se nec
 
 ### Executar Load Test
 
+Executa o plano `test-plans/blazedemo-load-test.jmx` e gera um novo resultado em `reports/load-test`.
+
 ```powershell
 .\scripts\run-load-test.ps1
 ```
@@ -99,6 +101,8 @@ reports/load-test/html
 ```
 
 ### Executar Spike Test
+
+Executa o plano `test-plans/blazedemo-spike-test.jmx` e gera um novo resultado em `reports/spike-test`.
 
 ```powershell
 .\scripts\run-spike-test.ps1
@@ -123,22 +127,6 @@ O projeto contem as evidencias das execucoes realizadas:
 - `reports/spike-test/html/statistics.json`
 
 Os arquivos `statistics.json` dos relatorios HTML foram usados como fonte de conferencia das metricas consolidadas apresentadas neste README.
-
-## Relatorios HTML
-
-Os relatorios completos gerados pelo Apache JMeter estao versionados no repositorio como evidencia da execucao.
-
-### Load Test
-
-- [Abrir relatorio HTML do Load Test](./reports/load-test/html/index.html)
-- [Arquivo de resultado bruto - Load Test](./reports/load-test/results.jtl)
-
-### Spike Test
-
-- [Abrir relatorio HTML do Spike Test](./reports/spike-test/html/index.html)
-- [Arquivo de resultado bruto - Spike Test](./reports/spike-test/results.jtl)
-
-> Observacao: o GitHub pode exibir arquivos HTML como codigo-fonte. Para visualizar o relatorio com layout completo, clone ou baixe o repositorio e abra o arquivo `index.html` diretamente no navegador.
 
 ## Execucao via GitHub Actions
 
