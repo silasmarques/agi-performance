@@ -1,0 +1,54 @@
+# Logs
+*.log
+logs/
+log/
+
+# JMeter temporary and runtime files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*.pid
+*.hprof
+*.jtl.tmp
+
+# Java and build artifacts
+target/
+build/
+out/
+*.class
+
+# Node/npm artifacts, if auxiliary tooling is added later
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDEs and editors
+.idea/
+.vscode/
+*.iml
+*.code-workspace
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Archives and local artifacts
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Environment files
+.env
+.env.*
+
+# Keep reports versioned as execution evidence.
+!reports/
+!reports/**
