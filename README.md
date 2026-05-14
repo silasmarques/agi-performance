@@ -1,8 +1,25 @@
 # Projeto de Testes de Performance - BlazeDemo
 
+[![Relatórios de Performance](https://img.shields.io/badge/Relatórios-GitHub%20Pages-0969da?style=flat-square&logo=github)](https://silasmarques.github.io/agi-performance/)
+
 Este repositório contém um projeto de testes de performance para o cenário de compra de passagem aérea com sucesso no site público de demonstração BlazeDemo.
 
 O objetivo é organizar planos de teste, scripts de execução, relatórios e documentação técnica para análise dos resultados obtidos com Apache JMeter.
+
+## Relatórios de Performance
+
+Os relatórios HTML são gerados pelo JMeter e publicados automaticamente no GitHub Pages após cada execução do workflow **JMeter Performance Tests**.
+
+Acesse a página de relatórios em: **[https://silasmarques.github.io/agi-performance/](https://silasmarques.github.io/agi-performance/)**
+
+| Relatório | Tipo de teste | Descrição |
+|---|---|---|
+| [Load Test](https://silasmarques.github.io/agi-performance/load-test/) | Carga sustentada | 400 usuários virtuais, ramp-up de 300s, duração de 600s |
+| [Spike Test](https://silasmarques.github.io/agi-performance/spike-test/) | Pico abrupto | 500 usuários virtuais, ramp-up de 20s, duração de 300s |
+
+Cada relatório inclui métricas consolidadas (throughput, percentis de latência, taxa de erro) e gráficos gerados pelo próprio JMeter. Os arquivos `.jtl` também ficam disponíveis para análise externa.
+
+> Os relatórios são atualizados a cada execução manual do workflow. O histórico de execuções pode ser consultado em **Actions → JMeter Performance Tests**.
 
 ## Ferramenta utilizada
 
