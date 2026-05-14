@@ -149,6 +149,12 @@ Os relatórios gerados pelo workflow ficam disponíveis como artifacts do GitHub
 - `load-test-report`: contém `reports/action-load-test/results.jtl` e `reports/action-load-test/html`.
 - `spike-test-report`: contém `reports/action-spike-test/results.jtl` e `reports/action-spike-test/html`.
 
+Ao final da execução, o workflow também publica uma página no GitHub Pages com links para os relatórios HTML gerados. Quando habilitada, a página fica disponível em:
+
+```text
+https://silasmarques.github.io/agi-performance/
+```
+
 > Observação: a execução via GitHub Actions é manual e opcional. Como o BlazeDemo é um ambiente público de demonstração, os testes de carga devem ser executados com responsabilidade.
 
 ## Resultado do Load Test

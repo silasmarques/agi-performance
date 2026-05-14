@@ -13,9 +13,21 @@ on:
           - spike
           - both
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   jmeter-performance:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout repository
@@ -36,6 +48,7 @@ jobs:
         run: |
           mkdir -p reports/action-load-test
           mkdir -p reports/action-spike-test
+          rm -rf page-site
           rm -rf reports/action-load-test/html
           rm -rf reports/action-spike-test/html
           rm -f reports/action-load-test/results.jtl
@@ -76,3 +89,90 @@ jobs:
           path: |
             reports/action-spike-test/results.jtl
             reports/action-spike-test/html
+
+      - name: Build GitHub Pages site
+        run: |
+          mkdir -p page-site
+
+          cat > page-site/index.html <<'HTML'
+          <!doctype html>
+          <html lang="pt-BR">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>BlazeDemo - Relatórios JMeter</title>
+            <style>
+              body {
+                color: #1f2937;
+                font-family: Arial, sans-serif;
+                line-height: 1.5;
+                margin: 40px auto;
+                max-width: 860px;
+                padding: 0 20px;
+              }
+              h1 {
+                margin-bottom: 8px;
+              }
+              .meta {
+                color: #4b5563;
+                margin-bottom: 28px;
+              }
+              .report {
+                border: 1px solid #d1d5db;
+                border-radius: 6px;
+                margin-bottom: 16px;
+                padding: 16px;
+              }
+              a {
+                color: #0969da;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>Relatórios JMeter - BlazeDemo</h1>
+            <p class="meta">Relatórios gerados por execução manual do GitHub Actions.</p>
+          HTML
+
+          if [ -d reports/action-load-test/html ]; then
+            mkdir -p page-site/load-test
+            cp -R reports/action-load-test/html/. page-site/load-test/
+            cp reports/action-load-test/results.jtl page-site/load-test/results.jtl
+            cat >> page-site/index.html <<'HTML'
+            <section class="report">
+              <h2>Load Test</h2>
+              <p><a href="./load-test/index.html">Abrir relatório HTML</a></p>
+              <p><a href="./load-test/results.jtl">Baixar results.jtl</a></p>
+            </section>
+          HTML
+          fi
+
+          if [ -d reports/action-spike-test/html ]; then
+            mkdir -p page-site/spike-test
+            cp -R reports/action-spike-test/html/. page-site/spike-test/
+            cp reports/action-spike-test/results.jtl page-site/spike-test/results.jtl
+            cat >> page-site/index.html <<'HTML'
+            <section class="report">
+              <h2>Spike Test</h2>
+              <p><a href="./spike-test/index.html">Abrir relatório HTML</a></p>
+              <p><a href="./spike-test/results.jtl">Baixar results.jtl</a></p>
+            </section>
+          HTML
+          fi
+
+          cat >> page-site/index.html <<'HTML'
+            <p>Observação: o BlazeDemo é um ambiente público de demonstração. Testes de carga devem ser executados com responsabilidade.</p>
+          </body>
+          </html>
+          HTML
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: page-site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
